@@ -59,38 +59,7 @@ int dictionarySize = 0;
  */
 bool load(const char* dictionary)
 {
-    FILE* file = fopen(dictionary, "r");
-    if (file == NULL)
-        return false;
     
-    // create an array for word to be stored in
-    char word[LENGTH + 1];
-
-    while (fscanf(file, "%s\n", word) != EOF)
-    {
-        dictionarySize++;
-        
-        node* newWord = malloc(sizeof(node));
-        
-        strcpy(newWord->word, word);
-        
-        int index = hash(word);
-        
-        if (hashtable[index] == NULL)
-        {
-            hashtable[index] = newWord;
-            newWord->next = NULL;
-        }
-        
-        else
-        {
-            newWord->next = hashtable[index];
-            hashtable[index] = newWord;
-        }      
-    }
-    
-    // close file
-    fclose(file);
     
     // return true if successful 
     return true;
@@ -101,72 +70,20 @@ bool load(const char* dictionary)
  */
 bool check(const char* word)
 {
-    // creates a temp variable that stores a lower-cased version of the word
-    char temp[LENGTH + 1];
-    int len = strlen(word);
-    for(int i = 0; i < len; i++)
-        temp[i] = tolower(word[i]);
-    temp[len] = '\0';
     
-    // find what index of the array the word should be in
-    int index = hash(temp);
-    
-    // if hashtable is empty at index, return false
-    if (hashtable[index] == NULL)
-    {
-        return false;
-    }
-    
-    // create cursor to compare to word
-    node* cursor = hashtable[index];
-
-    while (cursor != NULL)
-    {
-        if (strcmp(temp, cursor->word) == 0)
-        {
-            return true;
-        }
-        cursor = cursor->next;
-    }
 
     return false;
 }
 
 unsigned int size(void)
 {
-    if (dictionarySize > 0)
-    {
-        return dictionarySize;
-    }
-     
-    else
+    
         return 0;
 }
 
 
 bool unload(void)
 {
-    int index = 0;
-    
-    while (index < SIZE)
-    {
-        if (hashtable[index] == NULL)
-        {
-            index++;
-        }
-        
-        else
-        {
-            while(hashtable[index] != NULL)
-            {
-                node* cursor = hashtable[index];
-                hashtable[index] = cursor->next;
-                free(cursor);
-            }
-            
-            index++;
-        }
-    }
-    
+  
     return true;
 }
