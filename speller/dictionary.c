@@ -134,7 +134,12 @@ bool check(const char* word)
 
 unsigned int size(void)
 {
-    
+    if (dictionarySize > 0)
+    {
+        return dictionarySize;
+    }
+     
+    else
         return 0;
 }
 
