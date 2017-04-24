@@ -59,7 +59,38 @@ int dictionarySize = 0;
  */
 bool load(const char* dictionary)
 {
+    FILE* file = fopen(dictionary, "r");
+    if (file == NULL)
+        return false;
     
+    // create an array for word to be stored in
+    char word[LENGTH + 1];
+
+    while (fscanf(file, "%s\n", word) != EOF)
+    {
+        dictionarySize++;
+        
+        node* newWord = malloc(sizeof(node));
+        
+        strcpy(newWord->word, word);
+        
+        int index = hash(word);
+        
+        if (hashtable[index] == NULL)
+        {
+            hashtable[index] = newWord;
+            newWord->next = NULL;
+        }
+        
+        else
+        {
+            newWord->next = hashtable[index];
+            hashtable[index] = newWord;
+        }      
+    }
+    
+    // close file
+    fclose(file);
     
     // return true if successful 
     return true;
