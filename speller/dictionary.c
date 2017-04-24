@@ -101,7 +101,33 @@ bool load(const char* dictionary)
  */
 bool check(const char* word)
 {
+    // creates a temp variable that stores a lower-cased version of the word
+    char temp[LENGTH + 1];
+    int len = strlen(word);
+    for(int i = 0; i < len; i++)
+        temp[i] = tolower(word[i]);
+    temp[len] = '\0';
     
+    // find what index of the array the word should be in
+    int index = hash(temp);
+    
+    // if hashtable is empty at index, return false
+    if (hashtable[index] == NULL)
+    {
+        return false;
+    }
+    
+    // create cursor to compare to word
+    node* cursor = hashtable[index];
+
+    while (cursor != NULL)
+    {
+        if (strcmp(temp, cursor->word) == 0)
+        {
+            return true;
+        }
+        cursor = cursor->next;
+    }
 
     return false;
 }
