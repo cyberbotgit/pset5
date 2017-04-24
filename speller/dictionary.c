@@ -146,6 +146,27 @@ unsigned int size(void)
 
 bool unload(void)
 {
-  
+    int index = 0;
+    
+    while (index < SIZE)
+    {
+        if (hashtable[index] == NULL)
+        {
+            index++;
+        }
+        
+        else
+        {
+            while(hashtable[index] != NULL)
+            {
+                node* cursor = hashtable[index];
+                hashtable[index] = cursor->next;
+                free(cursor);
+            }
+            
+            index++;
+        }
+    }
+    
     return true;
 }
